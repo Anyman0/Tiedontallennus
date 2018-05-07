@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 namespace Tiedontallennus
 {
@@ -12,7 +13,7 @@ namespace Tiedontallennus
         static void Main(string[] args)
         {
             string file = @"C:\Users\User\Desktop\Projects\temp.txt";
-
+            
             // Reading the possible previously added temperature value
             if (File.Exists(file))
             {
@@ -31,8 +32,30 @@ namespace Tiedontallennus
 
             // Saving the given value to a file           
             File.WriteAllText(file, temperature.ToString());
-            Console.WriteLine("new temperature saved.");
+            Console.WriteLine("new temperature saved. Press enter to read nonsense.");
 
+            Console.ReadLine();
+
+            // XML-file reader TEST
+            XmlTextReader reader = new XmlTextReader("Nonsense.xml");
+            while (reader.Read())
+            {
+                switch (reader.NodeType)
+                {
+                    case XmlNodeType.Element: // The node is an element.
+                        Console.Write("<" + reader.Name);
+                        Console.WriteLine(">");
+                        break;
+                    case XmlNodeType.Text: //Display the text in each element.
+                        Console.WriteLine(reader.Value);
+                        break;
+                    case XmlNodeType.EndElement: //Display the end of the element.
+                        Console.Write("</" + reader.Name);
+                        Console.WriteLine(">");
+                        break;
+                }
+            }
+            
             Console.ReadLine();
         }
     }
